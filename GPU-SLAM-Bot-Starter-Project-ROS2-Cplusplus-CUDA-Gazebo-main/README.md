@@ -30,12 +30,20 @@ ws/
  │   └─ gpu_slam_bot/
  │       ├─ CMakeLists.txt
  │       ├─ package.xml
- │       ├─ include/gpu_slam_bot/gpu_grid.hpp
- │       ├─ src/gpu_grid.cu
- │       ├─ src/gpu_slam_node.cpp
- │       ├─ launch/sim.launch.py
- │       └─ worlds/empty_lidar.world
- └─ ...
+ │       ├─ include/
+ │       │   └─ gpu_slam_bot/
+ │       │       └─ gpu_grid.hpp
+ │       ├─ src/
+ │       │   ├─ gpu_grid.cu
+ │       │   └─ gpu_slam_node.cpp
+ │       ├─ launch/
+ │       │   └─ sim.launch.py
+ │       └─ worlds/
+ │           └─ empty_lidar.world
+ └─ build/       (generated after colcon build)
+ └─ install/     (generated after colcon build)
+ └─ log/         (generated after colcon build)
+
 ```
 
 ### 3) Build Prereqs
@@ -48,6 +56,17 @@ ws/
 
 - Gazebo (Fortress/Garden) or classic Gazebo; adjust launch accordingly
 
+```bash
+which gazebo
+
+# If not install, try something like this (adjust to yours accordingly):
+
+sudo apt update
+
+sudo apt install ros-foxy-gazebo-ros-pkgs ros-foxy-gazebo-ros2-control
+
+```
+
 
 
 ### 4) To Run:
@@ -56,7 +75,7 @@ ws/
 
 cd ws
 
-source /opt/ros/humble/setup.bash #Replace humble with your version
+source /opt/ros/humble/setup.bash #Replace humble with your version, e.g. source /opt/ros/foxy/setup.bash
 
 colcon build --symlink-install #Build the workspace with CUDA support
 
@@ -95,7 +114,30 @@ Extra checks:
 
 nvcc --version #Verify CUDA
 
-ros2 pkg list | grep gpu_slam_bot #Verify package is found:
+ros2 pkg list | grep gpu_slam_bot #Verify package is found
 
+
+```
+
+If your `colcon build` doesn't work, try `colcon list`, if it prints nothing even in a clean workspace, it means ROS 2 cannot detect packages — most likely because of your Conda (base) environment interfering with ROS 2 Python packages.
+
+```bash
+
+conda deactivate
+
+
+```
+
+Then source ROS2 again.
+
+If you are dealing with “0 packages” trap with colcon in Unbuntu, try this:
+
+```bash
+
+# Optional: remove old pip installation if any
+pip3 uninstall colcon-common-extensions
+
+# Reinstall colcon via pip
+pip3 install --user colcon-common-extensions
 
 ```

@@ -32,6 +32,12 @@ public:
   // Copy grid from GPU to host as int8 occupancy (0..100, -1 unknown)
   void downloadToOcc(std::vector<int8_t> &occ_out) const;
 
+  // Updated to match ROS2 OccupancyGrid data type
+  void copyToOccupancyGrid(std::vector<int8_t> &data) const
+  {
+      downloadToOcc(data);
+  }
+
   const GridParams &params() const { return params_; }
 
 private:
