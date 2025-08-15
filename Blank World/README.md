@@ -141,3 +141,5 @@ pip3 uninstall colcon-common-extensions
 pip3 install --user colcon-common-extensions
 
 ```
+
+![Robot in Gazebo](screenshot/1.png "Robot simulation view - Blank World")
