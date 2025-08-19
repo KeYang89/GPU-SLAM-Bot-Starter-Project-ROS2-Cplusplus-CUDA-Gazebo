@@ -32,17 +32,26 @@ ws/
  │       ├─ package.xml
  │       ├─ include/
  │       │   └─ gpu_slam_bot/
- │       │       └─ gpu_grid.hpp
+ │       │       ├─ gpu_grid.hpp
+ │       │       └─ auto_move.hpp         
  │       ├─ src/
  │       │   ├─ gpu_grid.cu
- │       │   └─ gpu_slam_node.cpp
+ │       │   ├─ gpu_slam_node.cpp
+ │       │   └─ auto_move.cpp             
  │       ├─ launch/
  │       │   └─ sim.launch.py
+ │       ├─ config/
+ │       │   └─ diff_drive_controllers.yaml
+ │       ├─ urdf/
+ │       │   └─ gpu_slam_bot.urdf.xacro
+ │       ├─ models/
+ │       │   └─ box.sdf
  │       └─ worlds/
  │           └─ empty_lidar.world
- └─ build/       (generated after colcon build)
- └─ install/     (generated after colcon build)
+ ├─ build/       (generated after colcon build)
+ ├─ install/     (generated after colcon build)
  └─ log/         (generated after colcon build)
+
 
 ```
 
@@ -65,6 +74,8 @@ sudo apt update
 
 sudo apt install ros-foxy-gazebo-ros-pkgs ros-foxy-gazebo-ros2-control
 
+sudo apt install ros-foxy-teleop-twist-keyboard # make it move
+
 ```
 
 
@@ -75,9 +86,25 @@ sudo apt install ros-foxy-gazebo-ros-pkgs ros-foxy-gazebo-ros2-control
 
 cd ws
 
-source /opt/ros/foxy/setup.bash #Replace foxy with your version, e.g. source /opt/ros/humble/setup.bash
+source /opt/ros/foxy/setup.bash # Replace foxy with your version, e.g. source /opt/ros/humble/setup.bash
 
-colcon build --symlink-install #Build the workspace with CUDA support
+colcon build --symlink-install # Build the workspace with CUDA support
+
+```
+
+Generate URDF:
+
+```bash
+cd ws/src/gpu_slam_bot
+
+ros2 run xacro xacro urdf/gpu_slam_bot.urdf.xacro -o urdf/gpu_slam_bot.urdf
+
+
+# Spawn the robot in Gazebo
+ros2 run gazebo_ros spawn_entity.py \
+    -entity gpu_slam_bot \
+    -file urdf/gpu_slam_bot.urdf
+
 
 ```
 
@@ -103,7 +130,11 @@ Run the launch file:
 
 cd ws
 
-ros2 launch gpu_slam_bot sim.launch.py
+<del>chmod +x src/gpu_slam_bot/gpu_slam_bot/autonomous_drive.py</del>  # using C++ instead
+<del>chmod +x src/gpu_slam_bot/gpu_slam_bot/auto_move.py</del> # using C++ instead
+chmod +x launch_sim.sh
+
+./launch_sim.sh
 
 ```
 
