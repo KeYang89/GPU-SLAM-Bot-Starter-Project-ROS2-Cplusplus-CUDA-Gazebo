@@ -1,0 +1,148 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="maze_world">
+    <!-- Gravity -->
+    <gravity>0 0 -9.8</gravity>
+
+    <!-- Ground -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Sun -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- Physics -->
+    <physics type="ode">
+      <real_time_update_rate>1000</real_time_update_rate>
+      <max_step_size>0.001</max_step_size>
+    </physics>
+
+    <!-- ===== Maze Walls (Labyrinth) ===== -->
+    <!-- Outer Boundary Walls -->
+    <model name="outer_wall_north">
+      <pose>0 50 1.5 0 0 0</pose>
+      <link name="wall">
+        <collision name="collision">
+          <geometry>
+            <box><size>100 1 3</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>100 1 3</size></box>
+          </geometry>
+          <material><ambient>0.6 0.6 0.6 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="outer_wall_south">
+      <pose>0 -50 1.5 0 0 0</pose>
+      <link name="wall">
+        <collision name="collision">
+          <geometry>
+            <box><size>100 1 3</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>100 1 3</size></box>
+          </geometry>
+          <material><ambient>0.6 0.6 0.6 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="outer_wall_east">
+      <pose>50 0 1.5 0 0 0</pose>
+      <link name="wall">
+        <collision name="collision">
+          <geometry>
+            <box><size>1 100 3</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>1 100 3</size></box>
+          </geometry>
+          <material><ambient>0.6 0.6 0.6 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="outer_wall_west">
+      <pose>-50 0 1.5 0 0 0</pose>
+      <link name="wall">
+        <collision name="collision">
+          <geometry>
+            <box><size>1 100 3</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>1 100 3</size></box>
+          </geometry>
+          <material><ambient>0.6 0.6 0.6 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Interior Maze Walls (example corridors) -->
+    <model name="maze_wall_1">
+      <pose>0 20 1.5 0 0 0</pose>
+      <link name="wall">
+        <collision name="collision">
+          <geometry>
+            <box><size>80 1 3</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>80 1 3</size></box>
+          </geometry>
+          <material><ambient>0.4 0.4 0.8 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="maze_wall_2">
+      <pose>-20 -10 1.5 0 0 0</pose>
+      <link name="wall">
+        <collision name="collision">
+          <geometry>
+            <box><size>1 60 3</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>1 60 3</size></box>
+          </geometry>
+          <material><ambient>0.4 0.4 0.8 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="maze_wall_3">
+      <pose>25 -30 1.5 0 0 0</pose>
+      <link name="wall">
+        <collision name="collision">
+          <geometry>
+            <box><size>50 1 3</size></box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box><size>50 1 3</size></box>
+          </geometry>
+          <material><ambient>0.4 0.4 0.8 1</ambient></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- You can add more walls to make complex labyrinth paths -->
+
+  </world>
+</sdf>
