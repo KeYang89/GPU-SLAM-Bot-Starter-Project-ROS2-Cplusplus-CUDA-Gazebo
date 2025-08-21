@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="box">
+    <!-- Make it dynamic -->
+    <static>false</static>
+    <pose>0 0 0.1 0 0 0</pose> <!-- lifted slightly above ground -->
+
+    <link name="link">
+      <pose>0 0 0 0 0 0</pose>
+
+      <!-- Add inertial properties -->
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.0067</ixx>
+          <iyy>0.0067</iyy>
+          <izz>0.0067</izz>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+        </inertia>
+      </inertial>
+
+      <!-- Collision -->
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.2 0.2 0.2</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <!-- Visual -->
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.2 0.2 0.2</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>1 0 0 1</ambient>
+          <diffuse>1 0 0 1</diffuse>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
