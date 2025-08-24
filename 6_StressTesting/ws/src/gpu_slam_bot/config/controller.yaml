@@ -1,0 +1,61 @@
+# ===================== CONTROLLERS CONFIG =====================
+
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+
+# Differential drive controller for wheels
+diff_drive_controller:
+  ros__parameters:
+    type: "diff_drive_controller/DiffDriveController"
+    left_wheel_names: ["wheel_left_joint"]
+    right_wheel_names: ["wheel_right_joint"]
+    wheel_separation: 0.40  # match URDF
+    wheel_radius: 0.08      # match URDF
+    cmd_vel_timeout: 0.25
+    publish_rate: 50
+    base_frame_id: "base_link"
+    enable_odom_tf: true
+    pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
+
+# Joint position controller for left gripper
+left_gripper_controller:
+  ros__parameters:
+    type: "joint_trajectory_controller/JointTrajectoryController"
+    joints: ["left_gripper_joint"]
+    state_publish_rate: 50
+    action_monitor_rate: 50
+    constraints:
+      goal_time: 0.5
+      stopped_velocity_tolerance: 0.01
+      left_gripper_joint:
+        trajectory: 0.5
+        goal: 0.1
+
+# Joint position controller for right gripper
+right_gripper_controller:
+  ros__parameters:
+    type: "joint_trajectory_controller/JointTrajectoryController"
+    joints: ["right_gripper_joint"]
+    state_publish_rate: 50
+    action_monitor_rate: 50
+    constraints:
+      goal_time: 0.5
+      stopped_velocity_tolerance: 0.01
+      right_gripper_joint:
+        trajectory: 0.5
+        goal: 0.1
+
+# Joint position controller for front lifter
+lifter_controller:
+  ros__parameters:
+    type: "joint_trajectory_controller/JointTrajectoryController"
+    joints: ["front_lifter_joint"]
+    state_publish_rate: 50
+    action_monitor_rate: 50
+    constraints:
+      goal_time: 0.5
+      stopped_velocity_tolerance: 0.01
+      front_lifter_joint:
+        trajectory: 0.5
+        goal: 0.01

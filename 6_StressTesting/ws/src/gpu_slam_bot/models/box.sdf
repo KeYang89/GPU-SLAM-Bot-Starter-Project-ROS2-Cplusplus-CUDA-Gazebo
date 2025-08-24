@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <model name="box">
+    <pose>0 0 0 0 0 0</pose>
+    <link name="link">
+      <inertial>
+        <mass>1.0</mass> <!-- Reasonable mass for stability -->
+        <inertia>
+          <ixx>0.015</ixx>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyy>0.015</iyy>
+          <iyz>0.0</iyz>
+          <izz>0.015</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.3 0.3 0.2</size> <!-- Cube-like: 30cm x 30cm x 20cm -->
+          </box>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>1.0</mu> <!-- High static friction -->
+              <mu2>1.0</mu2> <!-- High dynamic friction -->
+            </ode>
+          </friction>
+          <contact>
+            <ode>
+              <kp>1000000.0</kp> <!-- High stiffness for stable contact -->
+              <kd>100.0</kd> <!-- Damping for stability -->
+            </ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.3 0.3 0.2</size> <!-- Matches collision geometry -->
+          </box>
+        </geometry>
+        <material>
+          <ambient>1 1 1 1</ambient> <!-- Placeholder, will be overridden -->
+          <diffuse>1 1 1 1</diffuse> <!-- Placeholder, will be overridden -->
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

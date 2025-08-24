@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="gpu_slam_bot">
+
+  <!-- Robot parameters -->
+  <xacro:property name="base_width" value="0.30"/>
+  <xacro:property name="base_length" value="0.45"/>
+  <xacro:property name="base_height" value="0.12"/>
+  <xacro:property name="wheel_radius" value="0.07"/>
+  <xacro:property name="wheel_width" value="0.06"/>
+  <xacro:property name="wheel_separation" value="0.35"/>
+
+  <!-- convenience materials -->
+  <material name="base_blue"><color rgba="0 0.5 1 1"/></material>
+  <material name="lidar_red"><color rgba="1 0 0 1"/></material>
+  <material name="wheel_black"><color rgba="0 0 0 1"/></material>
+  <material name="caster_grey"><color rgba="0.4 0.4 0.4 1"/></material>
+  <material name="pusher_orange"><color rgba="1 0.5 0 1"/></material>
+
+  <!-- Dummy root joint for KDL -->
+  <link name="world"/>
+  <joint name="base_dummy_joint" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- base -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><box size="${base_length} ${base_width} ${base_height}"/></geometry>
+      <material name="base_blue"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><box size="${base_length} ${base_width} ${base_height}"/></geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0"/>
+      <mass value="3.0"/>
+      <inertia ixx="${(1/12) * 3.0 * (base_width*base_width + base_height*base_height)}"
+               iyy="${(1/12) * 3.0 * (base_length*base_length + base_height*base_height)}"
+               izz="${(1/12) * 3.0 * (base_length*base_length + base_width*base_width)}"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <!-- lidar -->
+  <link name="lidar_link">
+    <visual>
+      <origin xyz="0 0 0.03" rpy="0 0 0"/>
+      <geometry><cylinder length="0.06" radius="0.055"/></geometry>
+      <material name="lidar_red"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.03" rpy="0 0 0"/>
+      <geometry><cylinder length="0.06" radius="0.055"/></geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0.03"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.0003" iyy="0.0003" izz="0.0002" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="0 0 ${base_height/2 + 0.03}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- wheels -->
+  <link name="wheel_left">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry><cylinder length="${wheel_width}" radius="${wheel_radius}"/></geometry>
+      <material name="wheel_black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry><cylinder length="${wheel_width}" radius="${wheel_radius}"/></geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.0013" iyy="0.0024" izz="0.0013" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <link name="wheel_right">
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry><cylinder length="${wheel_width}" radius="${wheel_radius}"/></geometry>
+      <material name="wheel_black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry><cylinder length="${wheel_width}" radius="${wheel_radius}"/></geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.0013" iyy="0.0024" izz="0.0013" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <!-- wheel joints -->
+  <joint name="wheel_left_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_left"/>
+    <origin xyz="0 ${wheel_separation/2} ${-base_height/2 + wheel_radius}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="wheel_right_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_right"/>
+    <origin xyz="0 ${-wheel_separation/2} ${-base_height/2 + wheel_radius}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- caster wheel -->
+  <link name="caster_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><sphere radius="0.03"/></geometry>
+      <material name="caster_grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><sphere radius="0.03"/></geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia ixx="1e-5" iyy="1e-5" izz="1e-5" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="caster_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_link"/>
+    <origin xyz="-${base_length/2} 0 ${-base_height/2 + 0.03}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Front pusher (fixed design) -->
+  <link name="front_pusher_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><box size="0.02 ${base_width - 0.05} ${base_height - 0.02}"/></geometry>
+      <material name="pusher_orange"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><box size="0.02 ${base_width - 0.05} ${base_height - 0.02}"/></geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0"/>
+      <mass value="0.2"/>
+      <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="front_lifter_joint" type="prismatic">
+    <parent link="base_link"/>
+    <child link="front_pusher_link"/>
+    <origin xyz="${base_length/2 + 0.01} 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="5" velocity="0.1" lower="0.0" upper="0.3"/>
+  </joint>
+
+  <!-- Gazebo plugins -->
+  <gazebo>
+    <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
+      <ros>
+        <namespace>/</namespace>
+        <argument>cmd_vel:=cmd_vel</argument>
+        <argument>odom:=odom</argument>
+      </ros>
+      <update_rate>50</update_rate>
+      <left_joint>wheel_left_joint</left_joint>
+      <right_joint>wheel_right_joint</right_joint>
+      <wheel_separation>${wheel_separation}</wheel_separation>
+      <wheel_diameter>${2*wheel_radius}</wheel_diameter>
+      <publish_odom>true</publish_odom>
+      <publish_wheel_tf>true</publish_tf>
+      <publish_tf>true</publish_tf>
+    </plugin>
+  </gazebo>
+
+</robot>
