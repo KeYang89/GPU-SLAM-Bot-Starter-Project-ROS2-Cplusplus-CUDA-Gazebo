@@ -37,7 +37,8 @@ ws/
  │       ├─ src/
  │       │   ├─ gpu_grid.cu
  │       │   ├─ gpu_slam_node.cpp
- │       │   └─ auto_move.cpp             
+ │       │   ├─ auto_move.cpp  
+ │       │   └─ ...         
  │       ├─ launch/
  │       │   └─ sim.launch.py
  │       ├─ config/
@@ -47,7 +48,8 @@ ws/
  │       ├─ models/
  │       │   └─ box.sdf
  │       └─ worlds/
- │           └─ empty_lidar.world
+ │           ├─empty_lidar.world
+ │           └─ ... 
  ├─ build/       (generated after colcon build)
  ├─ install/     (generated after colcon build)
  └─ log/         (generated after colcon build)
