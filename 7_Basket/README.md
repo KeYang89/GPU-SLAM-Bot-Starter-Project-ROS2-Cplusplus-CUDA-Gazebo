@@ -173,4 +173,4 @@ pip3 install --user colcon-common-extensions
 
 ```
 
-![Robot in Gazebo](screenshot/1.png "Robot simulation view - Blank World")
+![Robot in Gazebo](screenshot/7.png "Robot simulation view - 7")
